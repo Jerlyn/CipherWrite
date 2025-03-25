@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>CipherWrite | Uncover the True Author</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <meta name="description" content="CipherWrite helps you identify if text was written by AI or a human with high accuracy and provides actionable feedback.">
+  <meta name="theme-color" content="#2E86C1">
+  <meta name="msapplication-navbutton-color" content="#2E86C1">
+  <meta name="apple-mobile-web-app-status-bar-style" content="#2E86C1">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>CipherWrite</h1>
+      <p class="tagline">Uncover the True Author</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="app-container">
+      <div class="input-section">
+        <h2>Analyze Text</h2>
+        <p class="instruction">Paste your text below to discover whether AI or human created it</p>
+        
+        <div class="text-input-container">
+          <label for="text-input" class="input-label">Text to analyze</label>
+          <textarea 
+            id="text-input" 
+            placeholder="Paste your text here. For accurate results, include at least 3-4 sentences (minimum 100 characters)." 
+            rows="8"
+            aria-describedby="input-instructions"
+          ></textarea>
+          <div class="input-feedback">
+            <div id="input-instructions" class="helper-text">
+              For accurate analysis, provide at least 100 characters
+            </div>
+            <div id="char-count" class="char-counter">0 characters</div>
+          </div>
+          <div class="input-alternatives">
+            <div class="file-upload">
+              <label for="file-input" class="file-label">
+                <span class="file-icon" aria-hidden="true">📄</span> Upload text file
+              </label>
+              <input type="file" id="file-input" class="visually-hidden" accept=".txt,.md,.rtf">
+            </div>
+            <button id="example-btn" class="text-btn" aria-label="Use example text" title="Load sample text to test the detector">
+              <span class="btn-icon" aria-hidden="true">✏️</span> Try with example
+            </button>
+          </div>
+        </div>
+        
+        <div class="action-buttons">
+          <button id="analyze-btn" class="primary-btn" aria-label="Analyze text">
+            <span class="btn-icon" aria-hidden="true">🔍</span> Analyze
+          </button>
+          <button id="clear-btn" class="secondary-btn" aria-label="Clear text">
+            <span class="btn-icon" aria-hidden="true">✖</span> Clear
+          </button>
+        </div>
+      </div>
+
+      <div class="results-section" aria-live="polite">
+        <div class="results-placeholder">
+          <div class="placeholder-icon" aria-hidden="true">🔍</div>
+          <p>Your analysis results will appear here</p>
+          <p class="placeholder-hint">After entering text, click "Analyze" to determine the likely author</p>
+        </div>
+        
+        <div class="results-content hidden">
+          <h2>Analysis Results</h2>
+          
+          <div class="result-summary">
+            <div class="score-container">
+              <div class="score-circle">
+                <span id="ai-score">0%</span>
+              </div>
+              <p class="score-label">AI Probability</p>
+            </div>
+            
+            <div class="confidence-indicator">
+              <div class="confidence-level">
+                <span class="confidence-badge" id="confidence-badge">Medium</span>
+                <span class="confidence-label">Confidence</span>
+              </div>
+              <p class="confidence-text" id="confidence-text">
+                <!-- Confidence text will be inserted here by JavaScript -->
+              </p>
+            </div>
+          </div>
+          
+          <div class="result-details">
+            <div class="result-gauge">
+              <div class="gauge-label">
+                <span class="gauge-human">Human</span>
+                <span class="gauge-ai">AI</span>
+              </div>
+              <div class="gauge-bar">
+                <div class="gauge-fill" id="gauge-fill"></div>
+                <div class="gauge-markers">
+                  <span class="gauge-marker" style="left: 0%">0%</span>
+                  <span class="gauge-marker" style="left: 25%">25%</span>
+                  <span class="gauge-marker" style="left: 50%">50%</span>
+                  <span class="gauge-marker" style="left: 75%">75%</span>
+                  <span class="gauge-marker" style="left: 100%">100%</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="explanation-container">
+              <h3>Analysis Explanation</h3>
+              <p class="result-explanation" id="result-explanation">
+                <!-- Explanation will be inserted here by JavaScript -->
+              </p>
+            </div>
+            
+            <div class="text-stats-container">
+              <h3>Text Statistics</h3>
+              <div class="stats-grid">
+                <div class="stat-item">
+                  <div class="stat-value" id="stat-characters">0</div>
+                  <div class="stat-label">Characters</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value" id="stat-nonblank">0</div>
+                  <div class="stat-label">Non-blank Characters</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value" id="stat-words">0</div>
+                  <div class="stat-label">Words</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value" id="stat-spaces">0</div>
+                  <div class="stat-label">Spaces</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value" id="stat-sentences">0</div>
+                  <div class="stat-label">Sentences</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value" id="stat-lines">0</div>
+                  <div class="stat-label">Lines</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value" id="stat-nonemptylines">0</div>
+                  <div class="stat-label">Non-empty Lines</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value" id="stat-pages">0</div>
+                  <div class="stat-label">Pages (est.)</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="suggestions-container" id="suggestions-container">
+              <h3>Improvement Suggestions</h3>
+              <p class="suggestions-intro">How to make this text sound more human:</p>
+              <ul class="suggestions-list" id="suggestions-list">
+                <!-- Suggestions will be inserted here by JavaScript -->
+              </ul>
+            </div>
+            
+            <div class="factors-container">
+              <h3>Key Factors</h3>
+              <p class="factors-description">These scores indicate the strength of AI characteristics for each factor (higher % = stronger AI signal)</p>
+              <div class="factor-bars" id="factor-bars">
+                <!-- Factor bars will be inserted here by JavaScript -->
+              </div>
+            </div>
+          </div>
+          
+          <div class="action-footer">
+            <button id="copy-results-btn" class="secondary-btn" aria-label="Copy results">
+              <span class="btn-icon" aria-hidden="true">📋</span> Copy Results
+            </button>
+            <button id="new-analysis-btn" class="tertiary-btn" aria-label="Start new analysis">
+              <span class="btn-icon" aria-hidden="true">🔄</span> New Analysis
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="info-section">
+      <h2>How It Works</h2>
+      <div class="info-cards">
+        <div class="info-card">
+          <div class="info-icon">🧠</div>
+          <h3>Pattern Recognition</h3>
+          <p>Our algorithm analyzes writing patterns, vocabulary distribution, and sentence structures to detect AI-generated text.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">📊</div>
+          <h3>Statistical Analysis</h3>
+          <p>We compare your text against models trained on both human and AI writing samples to determine the probability score.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">🔒</div>
+          <h3>Privacy First</h3>
+          <p>Your text is analyzed directly in your browser. We don't store or share your content with anyone.</p>
+        </div>
+      </div>
+    </section>
+    
+    <section class="faq-section" id="faq">
+      <h2>FAQ & Writing Tips</h2>
+      <div class="faq-container">
+        <div class="faq-item">
+          <h3>How does CipherWrite detect AI text?</h3>
+          <p>CipherWrite analyzes multiple linguistic patterns including sentence structure, repetitive phrases, punctuation diversity, and stylistic markers that differentiate between human and AI writing styles.</p>
+        </div>
+        <div class="faq-item">
+          <h3>How can I make my text more human-like?</h3>
+          <p>Use varied sentence lengths, include personal opinions, add casual expressions, vary your punctuation, and incorporate relatable examples or anecdotes that show personality.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Why do AI detection tools sometimes make mistakes?</h3>
+          <p>AI detection is probabilistic, not definitive. Formal human writing can resemble AI writing, while well-edited AI text can appear human-like. Our tool provides a likelihood assessment rather than absolute certainty.</p>
+        </div>
+        <div class="faq-item">
+          <h3>What are common AI writing characteristics?</h3>
+          <p>AI typically produces text with consistent formality, predictable transitions, fewer colloquialisms, limited sentence length variation, and fewer unexpected stylistic choices or creative language patterns.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; <span id="current-year">2025</span> CipherWrite</p>
+      <p>
+        <a href="#" class="footer-link">Privacy Policy</a>
+        <a href="#" class="footer-link">About</a>
+        <a href="https://github.com/Jerlyn/cipherwrite" target="_blank" rel="noopener" class="footer-link">GitHub</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="js/detector.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

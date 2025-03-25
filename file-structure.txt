@@ -1,0 +1,8 @@
+ai-text-detective/
+├── index.html
+├── styles.css
+├── favicon.ico
+├── js/
+│   ├── detector.js
+│   └── app.js
+└── README.md

@@ -1,0 +1,98 @@
+## Fix for ERR_FILE_NOT_FOUND Errors
+
+The errors you're seeing are because the browser is trying to load files that don't exist yet. Here's how to fix them:
+
+### 1. Create the Directory Structure
+
+```bash
+mkdir -p js
+```
+
+### 2. Place Files in the Correct Locations
+
+1. Save the HTML code to `index.html` in the root directory
+2. Save the CSS code to `styles.css` in the root directory
+3. Save the detector.js code to `js/detector.js`
+4. Save the app.js code to `js/app.js`
+
+### 3. Create a Favicon
+
+Option 1: Convert the SVG to ICO
+- Use an online converter like https://convertio.co/svg-ico/
+- Upload the SVG we created
+- Download the .ico file and save it as `favicon.ico` in the root directory
+
+Option 2: Use a Data URL in HTML
+- Replace the favicon link in index.html with:
+```html
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><circle cx=%2232%22 cy=%2232%22 r=%2230%22 fill=%22%232563eb%22 /><circle cx=%2226%22 cy=%2226%22 r=%2212%22 fill=%22none%22 stroke=%22white%22 stroke-width=%224%22 /><line x1=%2234%22 y1=%2234%22 x2=%2246%22 y2=%2246%22 stroke=%22white%22 stroke-width=%224%22 stroke-linecap=%22round%22 /></svg>" type="image/svg+xml">
+```
+
+## GitHub Deployment
+
+### 1. Initialize Git Repository
+
+```bash
+# Navigate to your project directory
+cd path/to/ai-text-detective
+
+# Initialize a new git repository
+git init
+
+# Add all files to the repository
+git add .
+
+# Make the initial commit
+git commit -m "Initial commit of AI Text Detective"
+```
+
+### 2. Create GitHub Repository
+
+1. Go to GitHub and sign in with your account
+2. Click the "+" icon in the top right and select "New repository"
+3. Name the repository "ai-text-detective"
+4. Keep it public or private based on your preference
+5. Do not initialize with a README, .gitignore, or license (we already have these)
+6. Click "Create repository"
+
+### 3. Connect and Push to GitHub
+
+```bash
+# Add the GitHub repository as a remote
+git remote add origin https://github.com/Jerlyn/ai-text-detective.git
+
+# Push your code to GitHub
+git push -u origin main
+# Note: If your default branch is named "master" use:
+# git push -u origin master
+```
+
+### 4. Enable GitHub Pages (Optional)
+
+1. Go to your repository on GitHub
+2. Click "Settings"
+3. Scroll down to "GitHub Pages" section
+4. Select "main" (or "master") branch as the source
+5. Click "Save"
+6. Your site will be published at https://jerlyn.github.io/ai-text-detective/
+
+## Testing the Application
+
+Open the index.html file in your browser. You should no longer see the ERR_FILE_NOT_FOUND errors.
+
+To test the AI detection functionality:
+1. Paste some text in the text area
+2. Click "Analyze"
+3. Review the results
+
+Try with both human-written and AI-generated text to see how accurately it detects the difference.
+
+## Troubleshooting
+
+If you still encounter file not found errors:
+
+1. Check file paths: Make sure all files are in the correct directories
+2. Check file names: Ensure all filenames match exactly what's referenced in the HTML
+3. Check browser cache: Try clearing your browser cache or opening in a private/incognito window
+4. Check file permissions: Ensure your web server has permission to access these files
+5. Check for typos: Ensure there are no typos in the file paths in the HTML
